@@ -1,36 +1,20 @@
 import streamlit as st
 import pandas as pd
 
-# Custom CSS
-st.set_page_config(page_title="Payment Profile Calculator")
-
-st.markdown(
-    f"""
-    <style>
-    .stButton button {{
-        background-color: #1f493b !important;
-        color: white !important;
-        border-radius: 0px !important;
-        padding: 0.5rem 1.5rem !important;
-        font-size: 1rem !important;
-        border: none !important;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # App title
 st.title("Payment Profile Visualizer")
 
 # Input form
-recurring_payment = st.number_input("Recurring payment (DKK):", min_value=0, step=500)
+recurring_monthly_payment = st.number_input("Recurring monthly payment (DKK):", min_value=0, step=500)
 upfront_payment = st.number_input("Upfront payment (DKK):", min_value=0, step=500)
 duration = st.selectbox("Duration (in quarters):", [20, 40])
 
+# Calculate quarterly payment from monthly payment
+recurring_quarterly_payment = recurring_monthly_payment * 3
+
 # Generate the DataFrame
 quarters = [f"Q{i}" for i in range(1, duration + 1)]
-payments = [recurring_payment] * duration
+payments = [recurring_quarterly_payment] * duration
 payments[0] += upfront_payment  # Add the upfront payment to the first quarter
 
 df = pd.DataFrame([payments], columns=quarters, index=["Payment"])
