@@ -7,7 +7,16 @@ st.title("Payment Profile Visualizer")
 # Input form
 recurring_monthly_payment = st.number_input("Recurring monthly payment (DKK):", min_value=0, step=500)
 upfront_payment = st.number_input("Upfront payment (DKK):", min_value=0, step=500)
-duration = st.selectbox("Duration (in quarters):", [20, 40])
+
+# Define duration options with labels and underlying values
+duration_options = [("5 years", 20), ("10 years", 40)]
+
+# Use the selectbox with format_func to show labels
+duration = st.selectbox(
+    "Duration:",
+    options=duration_options,
+    format_func=lambda x: x[0]
+)[1]  # Get the underlying value for calculation
 
 # Calculate quarterly payment from monthly payment
 recurring_quarterly_payment = recurring_monthly_payment * 3
