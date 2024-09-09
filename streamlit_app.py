@@ -1,19 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-# Set up custom color scheme
-st.set_page_config(page_title="Payment Profile Visualizer", page_icon="💰", layout="centered")
-st.markdown(
-    """
-    <style>
-    :root {
-        --primary-color: #1f493b;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # App title
 st.title("Payment Profile Visualizer")
 
