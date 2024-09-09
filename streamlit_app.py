@@ -23,16 +23,21 @@ upfront_payment = st.number_input("Upfront payment (DKK):", min_value=0, step=50
 duration = st.selectbox("Duration (in quarters):", [20, 40])
 
 # Generate the DataFrame
-quarters = list(range(1, duration + 1))
-payments = [3*recurring_payment] * duration
+quarters = [f"Q{i}" for i in range(1, duration + 1)]
+payments = [recurring_payment] * duration
 payments[0] += upfront_payment  # Add the upfront payment to the first quarter
 
-df = pd.DataFrame([payments], columns=[f"Q{i}" for i in quarters], index=["Payment"])
+df = pd.DataFrame([payments], columns=quarters, index=["Payment"])
+
+# Ensure quarters are sorted correctly for visualization
+df = df.T  # Transpose for easier plotting
+df.index = pd.Categorical(df.index, categories=quarters, ordered=True)  # Sort correctly by quarter
+df = df.sort_index()
 
 # Display the DataFrame
 st.subheader("Payment Schedule")
-st.dataframe(df)
+st.dataframe(df.T)  # Display the original format
 
 # Visualize the payment profile
 st.subheader("Payment Profile Visualization")
-st.bar_chart(df.T)  # Transpose the DataFrame for correct bar chart orientation
+st.bar_chart(df)
