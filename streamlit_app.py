@@ -33,9 +33,9 @@ df = df.T  # Transpose for easier plotting
 df.index = pd.Categorical(df.index, categories=quarters, ordered=True)  # Sort correctly by quarter
 df = df.sort_index()
 
-# Display the DataFrame
+# Display the DataFrame with increased width
 st.subheader("Payment Schedule")
-st.dataframe(df.T)  # Display the original format
+st.dataframe(df.T, use_container_width=True)  # Set use_container_width to True
 
 # Visualize the payment profile
 st.subheader("Payment Profile Visualization")
