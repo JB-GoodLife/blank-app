@@ -1,6 +1,25 @@
 import streamlit as st
 import pandas as pd
 
+# Custom CSS
+st.set_page_config(page_title="Payment Profile Calculator")
+
+st.markdown(
+    f"""
+    <style>
+    .stButton button {{
+        background-color: #1f493b !important;
+        color: white !important;
+        border-radius: 0px !important;
+        padding: 0.5rem 1.5rem !important;
+        font-size: 1rem !important;
+        border: none !important;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # App title
 st.title("Payment Profile Visualizer")
 
