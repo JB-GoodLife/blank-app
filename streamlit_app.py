@@ -1,29 +1,25 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
-def calculate_payment_profile(recurring_payment, upfront_payment, duration):
-    quarters = 40
-    if duration == "20 Quarters":
-        quarters = 20
+# Set up the app title
+st.title("Payment Profile Visualizer")
 
-    data = {f"Q{q}": [recurring_payment if i > 0 else recurring_payment + upfront_payment] for i, q in enumerate(range(1, quarters + 1))}
-    df = pd.DataFrame(data)
-    return df
+# Input form
+recurring_payment = st.number_input("Recurring payment (DKK):", min_value=0.0, step=0.01)
+upfront_payment = st.number_input("Upfront payment (DKK):", min_value=0.0, step=0.01)
+duration = st.selectbox("Duration (in quarters):", [20, 40])
 
-st.title("Payment Profile Calculator")
+# Generate the DataFrame
+quarters = list(range(1, duration + 1))
+payments = [recurring_payment] * duration
+payments[0] += upfront_payment  # Add the upfront payment to the first quarter
 
-recurring_payment = st.number_input("Recurring payment (DKK)", min_value=0.0, step=100.0)
-upfront_payment = st.number_input("Upfront payment (DKK)", min_value=0.0, step=100.0)
-duration = st.selectbox("Duration", ["20 Quarters", "40 Quarters"])
+df = pd.DataFrame([payments], columns=[f"Q{i}" for i in quarters], index=["Payment"])
 
-if st.button("Calculate Payment Profile"):
-    payment_df = calculate_payment_profile(recurring_payment, upfront_payment, duration)
-    st.dataframe(payment_df)
+# Display the DataFrame
+st.subheader("Payment Schedule")
+st.dataframe(df)
 
-    fig, ax = plt.subplots(figsize=(12, 6))
-    payment_df.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Quarter")
-    ax.set_ylabel("Payment (DKK)")
-    ax.set_title("Payment Profile")
-    st.pyplot(fig)
+# Visualize the payment profile
+st.subheader("Payment Profile Visualization")
+st.bar_chart(df.T)  # Transpose the DataFrame for correct bar chart orientation
